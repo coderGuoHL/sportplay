@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.guo.sportplay.dao.MenuDao">
+    <resultMap id="menuMap" type="MainMenu">
+        <result property="id" column="id" />
+        <result property="title" column="title" />
+        <result property="path" column="path" />
+         <!-- 一对多关系  -->
+        <collection property="menuList" ofType="SubMenu">
+            <id column="sid" property="id" />
+            <result column="stitle" property="title" />
+            <result column="spath" property="path" />
+        </collection>
+    </resultMap>
+
+    <select id="getMenus" resultMap="menuMap">
+        select mm.id as id,mm.title as title, mm.path as path, sm.id as sid, sm.title as stitle,sm.path as spath
+        from mainmenu mm,submenu sm
+        where mm.id = sm.mid
+    </select>
+
+</mapper>

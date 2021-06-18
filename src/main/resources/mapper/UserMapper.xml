@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.guo.sportplay.dao.UserDao">
+    <resultMap id="BaseResultMap" type="User">
+        <result column="username" property="userName" />
+    </resultMap>
+
+    <select id="getById" resultType="User">
+        select * from easyproject.easyuser
+        where id = #{id}
+    </select>
+
+    <select id="getAllUsers" resultType="User">
+        select * from easyproject.easyuser
+        <if test="username != null">
+            WHERE username like #{username}
+        </if>
+        LIMIT #{pageStart},#{pageSize}
+    </select>
+
+    <select id="getUserByMessage" resultType="User">
+        select * from easyproject.easyuser
+        where username=#{username} and password=#{password} and state=1
+    </select>
+
+    <select id="getUserCount" resultType="_int">
+        SELECT COUNT(*) FROM easyproject.easyuser
+        <if test="username != null">
+            WHERE username like #{username}
+        </if>
+    </select>
+
+    <update id="updateState">
+        UPDATE easyuser
+        SET state=#{state}
+        WHERE id=#{id}
+    </update>
+
+    <delete id="deleteUser" parameterType="_int">
+        DELETE  FROM easyuser
+        WHERE id=#{id}
+    </delete>
+
+    <insert id="addUser" parameterType="User">
+        INSERT INTO easyuser
+        VALUES(0, #{userName}, #{password}, #{email}, #{role}, #{state})
+    </insert>
+</mapper>
